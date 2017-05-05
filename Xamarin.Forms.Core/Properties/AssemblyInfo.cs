@@ -20,7 +20,7 @@ using Xamarin.Forms.Internals;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
-//[assembly: InternalsVisibleTo("Xamarin.Forms.Platform.iOS")]
+[assembly: InternalsVisibleTo("Xamarin.Forms.Platform.iOS")] // Needed for ReloadRows support
 //[assembly: InternalsVisibleTo("Xamarin.Forms.Platform.iOS.Classic")]
 //[assembly: InternalsVisibleTo("Xamarin.Forms.Platform.Android")]
 //[assembly: InternalsVisibleTo("Xamarin.Forms.Platform.UAP")]

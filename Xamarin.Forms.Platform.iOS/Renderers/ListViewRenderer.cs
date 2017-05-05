@@ -189,6 +189,10 @@ namespace Xamarin.Forms.Platform.iOS
 
 				listView.ScrollToRequested -= OnScrollToRequested;
 				var templatedItems = ((ITemplatedItemsView<Cell>)e.OldElement).TemplatedItems;
+				
+				//<Curbits>
+				e.OldElement.ReloadRowsRequested += OnReloadRowsRequested;
+				//</Curbits>
 
 				templatedItems.CollectionChanged -= OnCollectionChanged;
 				templatedItems.GroupedCollectionChanged -= OnGroupedCollectionChanged;
@@ -210,7 +214,11 @@ namespace Xamarin.Forms.Platform.iOS
 						Control.SetContentOffset(offset, true);
 					});
 				}
-				_shouldEstimateRowHeight = true;
+				
+				//<Curbits>
+				_shouldEstimateRowHeight = false;
+				//_shouldEstimateRowHeight = true;
+				//</Curbits>
 
 				var listView = e.NewElement;
 
@@ -219,6 +227,10 @@ namespace Xamarin.Forms.Platform.iOS
 
 				templatedItems.CollectionChanged += OnCollectionChanged;
 				templatedItems.GroupedCollectionChanged += OnGroupedCollectionChanged;
+
+				//<Curbits>
+				e.NewElement.ReloadRowsRequested += OnReloadRowsRequested;
+				//</Curbits>
 
 				UpdateRowHeight();
 
@@ -239,6 +251,31 @@ namespace Xamarin.Forms.Platform.iOS
 
 			base.OnElementChanged(e);
 		}
+
+		//<Curbits>
+
+		void OnReloadRowsRequested(object sender, ReloadRowsRequestedEventArgs e)
+		{
+			NSIndexPath[] nsIndexPaths = new NSIndexPath[e.RowSections.Count];
+
+			for (int i = 0; i < nsIndexPaths.Length; i++)
+			{
+				nsIndexPaths[i] = NSIndexPath.FromRowSection(e.RowSections[i].Row, e.RowSections[i].Section);
+			}
+
+			//Console.WriteLine("Reloading rows...");
+
+			UITableViewRowAnimation animation = UITableViewRowAnimation.Automatic;
+
+			if ((e.Animation is int) || (e.Animation is Enum))
+			{
+				animation = (UITableViewRowAnimation)((int)e.Animation);
+			}
+
+			Control.ReloadRows(nsIndexPaths, animation);
+		}
+
+		//</Curbits>
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
@@ -660,6 +697,25 @@ namespace Xamarin.Forms.Platform.iOS
 
 			public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
 			{
+				//<Curbits>
+
+				var rowHeightResolverProperty = (Func<RowSection, float>)List.GetValue(Xamarin.Forms.PlatformConfiguration.iOSSpecific.ListView.RowHeightResolverProperty);
+
+				if (rowHeightResolverProperty != null) { 
+					var rowHeight = rowHeightResolverProperty(new RowSection(indexPath.Row, indexPath.Section));
+
+					return rowHeight;
+				}
+
+				//float rowHeight = List.GetRowHeightInternal(new RowSection(indexPath.Row, indexPath.Section));
+
+				//if (!float.IsNaN(rowHeight))
+				//{
+				//	return rowHeight;
+				//}
+
+				//</Curbits>
+
 				var cell = GetCellForPath(indexPath);
 
 				if (List.RowHeight == -1 && cell.Height == -1 && cell is ViewCell)

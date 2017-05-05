@@ -384,8 +384,9 @@ namespace Xamarin.Forms.Platform.iOS
 		{
 			var parentPages = ((Page)Element).GetParentPages();
 			var masterDetail = parentPages.OfType<MasterDetailPage>().FirstOrDefault();
-
-			if (masterDetail != null && parentPages.Append((Page)Element).Contains(masterDetail.Detail))
+			
+			// We must use the enumerable extensions directly because of a collision between Linq
+			if (masterDetail != null && EnumerableExtensions.Append(parentPages, (Page)Element).Contains(masterDetail.Detail))
 				_parentMasterDetailPage = masterDetail;
 		}
 

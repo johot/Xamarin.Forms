@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using NUnit.Framework;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace Xamarin.Forms.Core.UnitTests
 {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -591,5 +592,17 @@ namespace Xamarin.Forms
 		{
 			return _platformConfigurationRegistry.Value.On<T>();
 		}
+
+		//<Curbits>
+		
+		internal event EventHandler<ReloadRowsRequestedEventArgs> ReloadRowsRequested;
+
+		internal void ReloadRows(IList<RowSection> rowSections, object animation = null)
+		{
+			if (ReloadRowsRequested != null)
+				ReloadRowsRequested(this, new ReloadRowsRequestedEventArgs(rowSections, animation));
+		}
+
+		//</Curbits>
 	}
 }
