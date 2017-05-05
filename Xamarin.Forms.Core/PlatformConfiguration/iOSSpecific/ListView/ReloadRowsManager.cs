@@ -10,10 +10,14 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 	{
 		public event EventHandler<ReloadRowsRequestedEventArgs> ReloadRowsRequested;
 
-		public void ReloadRows(IList<RowSection> rowSections, object animation = null)
+		public void ReloadRow(RowSection rowSection, RowAnimation animation = RowAnimation.Fade)
 		{
-			if (ReloadRowsRequested != null)
-				ReloadRowsRequested(this, new ReloadRowsRequestedEventArgs(rowSections, animation));
+			ReloadRows(new List<RowSection>() { rowSection }, animation);
+		}
+
+		public void ReloadRows(IList<RowSection> rowSections, RowAnimation animation = RowAnimation.Fade)
+		{
+			ReloadRowsRequested?.Invoke(this, new ReloadRowsRequestedEventArgs(rowSections, animation));
 		}
 	}
 }

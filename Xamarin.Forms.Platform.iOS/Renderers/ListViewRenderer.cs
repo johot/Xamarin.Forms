@@ -191,9 +191,8 @@ namespace Xamarin.Forms.Platform.iOS
 				var templatedItems = ((ITemplatedItemsView<Cell>)e.OldElement).TemplatedItems;
 
 				//<Curbits>
-				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.OldElement.GetValue(Xamarin.Forms.PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.OldElement.GetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
 				reloadRowsManager.ReloadRowsRequested -= OnReloadRowsRequested;
-				//e.OldElement.ReloadRowsRequested -= OnReloadRowsRequested;
 				//</Curbits>
 
 				templatedItems.CollectionChanged -= OnCollectionChanged;
@@ -231,8 +230,7 @@ namespace Xamarin.Forms.Platform.iOS
 				templatedItems.GroupedCollectionChanged += OnGroupedCollectionChanged;
 
 				//<Curbits>
-				//e.NewElement.ReloadRowsRequested += OnReloadRowsRequested;
-				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.NewElement.GetValue(Xamarin.Forms.PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.NewElement.GetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
 				reloadRowsManager.ReloadRowsRequested += OnReloadRowsRequested;
 				//</Curbits>
 
@@ -269,12 +267,7 @@ namespace Xamarin.Forms.Platform.iOS
 
 			//Console.WriteLine("Reloading rows...");
 
-			UITableViewRowAnimation animation = UITableViewRowAnimation.Automatic;
-
-			if ((e.Animation is int) || (e.Animation is Enum))
-			{
-				animation = (UITableViewRowAnimation)((int)e.Animation);
-			}
+			var animation = (UITableViewRowAnimation)((int)e.Animation);
 
 			Control.ReloadRows(nsIndexPaths, animation);
 		}

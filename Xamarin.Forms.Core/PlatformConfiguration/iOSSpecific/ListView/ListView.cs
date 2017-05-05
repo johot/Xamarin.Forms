@@ -28,11 +28,20 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 			return config;
 		}
 
-		public static IPlatformElementConfiguration<iOS, FormsElement> ReloadRows(this IPlatformElementConfiguration<iOS, FormsElement> config, IList<RowSection> rowSections, object animation = null)
+		public static IPlatformElementConfiguration<iOS, FormsElement> ReloadRow(this IPlatformElementConfiguration<iOS, FormsElement> config, RowSection rowSection, RowAnimation animation = RowAnimation.Fade)
 		{
 			// Get the manager
-			var manager = (ReloadRowsManager)config.Element.GetValue(ReloadRowsManagerProperty);
-			manager.ReloadRows(rowSections, animation);
+			var reloadRowsManager = (ReloadRowsManager)config.Element.GetValue(ReloadRowsManagerProperty);
+			reloadRowsManager.ReloadRow(rowSection, animation);
+
+			return config;
+		}
+
+		public static IPlatformElementConfiguration<iOS, FormsElement> ReloadRows(this IPlatformElementConfiguration<iOS, FormsElement> config, IList<RowSection> rowSections, RowAnimation animation =  RowAnimation.Fade)
+		{
+			// Get the manager
+			var reloadRowsManager = (ReloadRowsManager)config.Element.GetValue(ReloadRowsManagerProperty);
+			reloadRowsManager.ReloadRows(rowSections, animation);
 
 			return config;
 		}
