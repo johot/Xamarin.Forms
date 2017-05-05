@@ -10,7 +10,11 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 	{
 		public static readonly BindableProperty RowHeightResolverProperty =
 			BindableProperty.Create("RowHeightResolver", typeof(Func<RowSection, float>),
-			typeof(ListView), null);
+			typeof(FormsElement), null);
+
+		public static readonly BindableProperty ReloadRowsManagerProperty =
+			BindableProperty.Create("RowHeightResolver", typeof(ReloadRowsManager),
+			typeof(FormsElement), new ReloadRowsManager());
 
 		public static void SetRowHeightResolver(BindableObject element, Func<RowSection, float> value)
 		{
@@ -26,7 +30,9 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 		public static IPlatformElementConfiguration<iOS, FormsElement> ReloadRows(this IPlatformElementConfiguration<iOS, FormsElement> config, IList<RowSection> rowSections, object animation = null)
 		{
-			config.Element.ReloadRows(rowSections, animation);
+			// Get the manager
+			var manager = (ReloadRowsManager)config.Element.GetValue(ReloadRowsManagerProperty);
+			manager.ReloadRows(rowSections, animation);
 
 			return config;
 		}

@@ -1,0 +1,9 @@
+{
+  "commands": {
+    "Build curbits nuget": {
+      "fileName": "cmd.exe",
+      "workingDirectory": ".\\.nuspec\\",
+      "arguments": "/c \".nuspec\\Build curbits nuget.bat\""
+    }
+  }
+}

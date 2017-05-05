@@ -592,17 +592,5 @@ namespace Xamarin.Forms
 		{
 			return _platformConfigurationRegistry.Value.On<T>();
 		}
-
-		//<Curbits>
-		
-		internal event EventHandler<ReloadRowsRequestedEventArgs> ReloadRowsRequested;
-
-		internal void ReloadRows(IList<RowSection> rowSections, object animation = null)
-		{
-			if (ReloadRowsRequested != null)
-				ReloadRowsRequested(this, new ReloadRowsRequestedEventArgs(rowSections, animation));
-		}
-
-		//</Curbits>
 	}
 }

@@ -89,7 +89,8 @@
     <Compile Include="DelegateLogListener.cs" />
     <Compile Include="IEditorController.cs" />
     <Compile Include="IGridController.cs" />
-    <Compile Include="PlatformConfiguration\iOSSpecific\ReloadRowsRequestedEventArgs.cs" />
+    <Compile Include="PlatformConfiguration\iOSSpecific\ListView\ReloadRowsManager.cs" />
+    <Compile Include="PlatformConfiguration\iOSSpecific\ListView\ReloadRowsRequestedEventArgs.cs" />
     <Compile Include="IWebViewController.cs" />
     <Compile Include="INavigationMenuController.cs" />
     <Compile Include="Internals\EffectUtilities.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="PlatformConfiguration\iOSSpecific\StatusBarHiddenMode.cs" />
     <Compile Include="PlatformConfiguration\iOSSpecific\UIStatusBarAnimation.cs" />
     <Compile Include="PlatformConfiguration\iOSSpecific\UpdateMode.cs" />
-    <Compile Include="PlatformConfiguration\iOSSpecific\ListView.cs" />
+    <Compile Include="PlatformConfiguration\iOSSpecific\ListView\ListView.cs" />
     <Compile Include="PlatformConfiguration\iOSSpecific\VisualElement.cs" />
     <Compile Include="PlatformConfiguration\WindowsSpecific\MasterDetailPage.cs" />
     <Compile Include="PlatformConfiguration\WindowsSpecific\CollapseStyle.cs" />
@@ -256,7 +257,7 @@
     <Compile Include="RoutingEffect.cs" />
     <Compile Include="RowDefinition.cs" />
     <Compile Include="RowDefinitionCollection.cs" />
-    <Compile Include="PlatformConfiguration\iOSSpecific\RowSection.cs" />
+    <Compile Include="PlatformConfiguration\iOSSpecific\ListView\RowSection.cs" />
     <Compile Include="ScrollOrientation.cs" />
     <Compile Include="ScrollToMode.cs" />
     <Compile Include="ScrollToPosition.cs" />

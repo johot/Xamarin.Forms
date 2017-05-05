@@ -189,9 +189,11 @@ namespace Xamarin.Forms.Platform.iOS
 
 				listView.ScrollToRequested -= OnScrollToRequested;
 				var templatedItems = ((ITemplatedItemsView<Cell>)e.OldElement).TemplatedItems;
-				
+
 				//<Curbits>
-				e.OldElement.ReloadRowsRequested += OnReloadRowsRequested;
+				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.OldElement.GetValue(Xamarin.Forms.PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+				reloadRowsManager.ReloadRowsRequested -= OnReloadRowsRequested;
+				//e.OldElement.ReloadRowsRequested -= OnReloadRowsRequested;
 				//</Curbits>
 
 				templatedItems.CollectionChanged -= OnCollectionChanged;
@@ -229,7 +231,9 @@ namespace Xamarin.Forms.Platform.iOS
 				templatedItems.GroupedCollectionChanged += OnGroupedCollectionChanged;
 
 				//<Curbits>
-				e.NewElement.ReloadRowsRequested += OnReloadRowsRequested;
+				//e.NewElement.ReloadRowsRequested += OnReloadRowsRequested;
+				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.NewElement.GetValue(Xamarin.Forms.PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+				reloadRowsManager.ReloadRowsRequested += OnReloadRowsRequested;
 				//</Curbits>
 
 				UpdateRowHeight();
