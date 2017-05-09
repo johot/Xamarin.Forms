@@ -957,7 +957,10 @@ namespace Xamarin.Forms.Platform.iOS
 					return;
 				}
 
-				_uiTableView.SelectRow(NSIndexPath.FromRowSection(location.Item2, location.Item1), true, UITableViewScrollPosition.Middle);
+				//<Curbits>
+				//This simply feels wrong so we deactivate it
+				//_uiTableView.SelectRow(NSIndexPath.FromRowSection(location.Item2, location.Item1), true, UITableViewScrollPosition.Middle);
+				//</Curbits>
 			}
 
 			public override void RowDeselected(UITableView tableView, NSIndexPath indexPath)
