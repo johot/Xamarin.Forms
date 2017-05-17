@@ -14,7 +14,7 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 		public static readonly BindableProperty ReloadRowsManagerProperty =
 			BindableProperty.Create("RowHeightResolver", typeof(ReloadRowsManager),
-			typeof(FormsElement), new ReloadRowsManager());
+			typeof(FormsElement), null);
 
 		public static void SetRowHeightResolver(BindableObject element, Func<RowSection, float> value)
 		{
@@ -31,16 +31,26 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 		public static IPlatformElementConfiguration<iOS, FormsElement> ReloadRow(this IPlatformElementConfiguration<iOS, FormsElement> config, RowSection rowSection, RowAnimation animation = RowAnimation.Fade)
 		{
 			// Get the manager
-			var reloadRowsManager = (ReloadRowsManager)config.Element.GetValue(ReloadRowsManagerProperty);
+			var reloadRowsManager = GetReloadRowsManager(config);
 			reloadRowsManager.ReloadRow(rowSection, animation);
 
 			return config;
 		}
 
-		public static IPlatformElementConfiguration<iOS, FormsElement> ReloadRows(this IPlatformElementConfiguration<iOS, FormsElement> config, IList<RowSection> rowSections, RowAnimation animation =  RowAnimation.Fade)
+		private static ReloadRowsManager GetReloadRowsManager(IPlatformElementConfiguration<iOS, FormsElement> config)
+		{
+			var reloadRowsManager = (ReloadRowsManager)config.Element.GetValue(ReloadRowsManagerProperty);
+			
+			if (reloadRowsManager == null)
+				config.Element.SetValue(ReloadRowsManagerProperty, new ReloadRowsManager());
+
+			return (ReloadRowsManager)config.Element.GetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+		}
+
+		public static IPlatformElementConfiguration<iOS, FormsElement> ReloadRows(this IPlatformElementConfiguration<iOS, FormsElement> config, IList<RowSection> rowSections, RowAnimation animation = RowAnimation.Fade)
 		{
 			// Get the manager
-			var reloadRowsManager = (ReloadRowsManager)config.Element.GetValue(ReloadRowsManagerProperty);
+			var reloadRowsManager = GetReloadRowsManager(config);
 			reloadRowsManager.ReloadRows(rowSections, animation);
 
 			return config;

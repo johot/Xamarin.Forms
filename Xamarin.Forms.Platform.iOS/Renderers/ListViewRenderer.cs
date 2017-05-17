@@ -7,6 +7,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using RectangleF = CoreGraphics.CGRect;
 using SizeF = CoreGraphics.CGSize;
 
@@ -172,6 +173,18 @@ namespace Xamarin.Forms.Platform.iOS
 			base.Dispose(disposing);
 		}
 
+		//<Curbits>
+		private static ReloadRowsManager GetReloadRowsManager(ListView listView)
+		{
+			var reloadRowsManager = (ReloadRowsManager)listView.GetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+
+			if (reloadRowsManager == null)
+				listView.SetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty, new ReloadRowsManager());
+
+			return (ReloadRowsManager)listView.GetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+		}
+		//</Curbits>
+
 		protected override void OnElementChanged(ElementChangedEventArgs<ListView> e)
 		{
 			_requestedScroll = null;
@@ -191,7 +204,7 @@ namespace Xamarin.Forms.Platform.iOS
 				var templatedItems = ((ITemplatedItemsView<Cell>)e.OldElement).TemplatedItems;
 
 				//<Curbits>
-				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.OldElement.GetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+				var reloadRowsManager = GetReloadRowsManager(e.OldElement);
 				reloadRowsManager.ReloadRowsRequested -= OnReloadRowsRequested;
 				//</Curbits>
 
@@ -230,7 +243,8 @@ namespace Xamarin.Forms.Platform.iOS
 				templatedItems.GroupedCollectionChanged += OnGroupedCollectionChanged;
 
 				//<Curbits>
-				var reloadRowsManager = (PlatformConfiguration.iOSSpecific.ReloadRowsManager)e.NewElement.GetValue(PlatformConfiguration.iOSSpecific.ListView.ReloadRowsManagerProperty);
+				var reloadRowsManager = GetReloadRowsManager(e.NewElement);
+				reloadRowsManager.ReloadRowsRequested -= OnReloadRowsRequested;
 				reloadRowsManager.ReloadRowsRequested += OnReloadRowsRequested;
 				//</Curbits>
 
@@ -262,14 +276,16 @@ namespace Xamarin.Forms.Platform.iOS
 
 			for (int i = 0; i < nsIndexPaths.Length; i++)
 			{
-				nsIndexPaths[i] = NSIndexPath.FromRowSection(e.RowSections[i].Row, e.RowSections[i].Section);
+				nsIndexPaths[i] = NSIndexPath.FromItemSection(e.RowSections[i].Row, e.RowSections[i].Section);
 			}
 
 			//Console.WriteLine("Reloading rows...");
 
 			var animation = (UITableViewRowAnimation)((int)e.Animation);
 
+			Control.BeginUpdates();
 			Control.ReloadRows(nsIndexPaths, animation);
+			Control.EndUpdates();
 		}
 
 		//</Curbits>

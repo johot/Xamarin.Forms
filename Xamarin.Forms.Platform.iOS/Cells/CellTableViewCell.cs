@@ -81,6 +81,12 @@ namespace Xamarin.Forms.Platform.iOS
 			if (contextCell != null)
 			{
 				contextCell.Update(tableView, cell, nativeCell);
+
+				//<Curbits>
+				// Bug fix with selection style getting overriden
+				contextCell.SelectionStyle = nativeCell.SelectionStyle;
+				//</Curbits>
+
 				var viewTableCell = contextCell.ContentCell as ViewCellRenderer.ViewTableCell;
 				if (viewTableCell != null)
 					viewTableCell.SupressSeparator = tableView.SeparatorStyle == UITableViewCellSeparatorStyle.None;
